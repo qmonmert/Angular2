@@ -1,17 +1,12 @@
 import {Component, View} from 'angular2/core';
-
-export class Activity {
-    constructor(public name?: string, public distance?: number, public completed?: boolean) {
-        this.name = name;
-        this.distance = distance;  
-        this.completed = completed;  
-    }
-}
+import {StravaService} from './strava.service';
+import {Activity} from './activity';
 
 @Component({
     selector: 'strava',
     templateUrl: 'app/views/strava.html',
-    directives: []
+    directives: [],
+    providers: [StravaService]
     /* template:`
         ...
         ` */
@@ -22,14 +17,18 @@ export class AppStrava {
     
     public newActivity: Activity;
     
-    activities: Array<Activity>;
+    activities: Activity[];
     
-    constructor() {
+    constructor(private _stravaService: StravaService) {
         this.newActivity = new Activity();
-        this.activities = new Array<Activity>();
-        this.activities.push(new Activity('25\' + 10x100m r=30" + 20\' ', 11, true));
-        this.activities.push(new Activity('SL : 1h50', 25, true));
-        this.activities.push(new Activity('Footing', 11, false));
+    }
+    
+    getActivities() {
+        this._stravaService.getActivities().subscribe((activities) => this.activities = activities);
+    }
+    
+    ngOnInit() {
+        this.getActivities();
     }
     
     addActivity(activity) {

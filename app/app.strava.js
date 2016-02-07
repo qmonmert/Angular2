@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', './strava.service', './activity'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,41 +8,39 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
-    var Activity, AppStrava;
+    var core_1, strava_service_1, activity_1;
+    var AppStrava;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (strava_service_1_1) {
+                strava_service_1 = strava_service_1_1;
+            },
+            function (activity_1_1) {
+                activity_1 = activity_1_1;
             }],
         execute: function() {
-            Activity = (function () {
-                function Activity(name, distance, completed) {
-                    this.name = name;
-                    this.distance = distance;
-                    this.completed = completed;
-                    this.name = name;
-                    this.distance = distance;
-                    this.completed = completed;
-                }
-                return Activity;
-            })();
-            exports_1("Activity", Activity);
             AppStrava = (function () {
-                function AppStrava() {
+                function AppStrava(_stravaService) {
+                    this._stravaService = _stravaService;
                     this.title = 'Strava Activities';
-                    this.newActivity = new Activity();
-                    this.activities = new Array();
-                    this.activities.push(new Activity('25\' + 10x100m r=30" + 20\' ', 11, true));
-                    this.activities.push(new Activity('SL : 1h50', 25, true));
-                    this.activities.push(new Activity('Footing', 11, false));
+                    this.newActivity = new activity_1.Activity();
                 }
+                AppStrava.prototype.getActivities = function () {
+                    var _this = this;
+                    this._stravaService.getActivities().subscribe(function (activities) { return _this.activities = activities; });
+                };
+                AppStrava.prototype.ngOnInit = function () {
+                    this.getActivities();
+                };
                 AppStrava.prototype.addActivity = function (activity) {
                     if (activity.name !== undefined && activity.name !== ''
                         && activity.distance !== undefined && activity.distance !== '') {
                         if (!isNaN(parseInt(activity.distance))) {
                             this.activities.push(activity);
-                            this.newActivity = new Activity();
+                            this.newActivity = new activity_1.Activity();
                         }
                     }
                 };
@@ -56,9 +54,10 @@ System.register(['angular2/core'], function(exports_1) {
                     core_1.Component({
                         selector: 'strava',
                         templateUrl: 'app/views/strava.html',
-                        directives: []
+                        directives: [],
+                        providers: [strava_service_1.StravaService]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [strava_service_1.StravaService])
                 ], AppStrava);
                 return AppStrava;
             })();

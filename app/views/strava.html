@@ -4,6 +4,7 @@
     <thead>
         <tr>
             <th>SL</th>
+            <th>Type</th>
             <th>Name</th>
             <th>Distance</th>
             <th></th>
@@ -12,6 +13,7 @@
     <tbody>
         <tr *ngFor="#activity of activities">
             <td><input type="checkbox"  [checked]="activity.completed" (click)="setCompleted(activity)" /></td>
+            <td>{{activity.type}}</td>
             <td>{{activity.name}}</td>
             <td>{{activity.distance}}</td>
             <td><a class="btn btn-danger" (click)="removeActivity(activity)" role="button">Link</a></td>
