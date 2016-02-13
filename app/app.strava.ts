@@ -5,11 +5,7 @@ import {Activity} from './activity';
 @Component({
     selector: 'strava',
     templateUrl: 'app/views/strava.html',
-    directives: [],
     providers: [StravaService]
-    /* template:`
-        ...
-        ` */
 })
 export class AppStrava {
      
@@ -43,10 +39,6 @@ export class AppStrava {
     
     removeActivity(activity) {
         this.activities.splice(this.activities.indexOf(activity), 1);
-    }
-    
-    setCompleted(activity) {
-        activity.completed = !activity.completed;
     }
     
 }
